@@ -14,7 +14,7 @@ run-dev:
 
 # Run migrations
 migrate:
-	uv run alembic upgrade head
+	uv run alembic -c database/alembic.ini upgrade head
 
 # Create a new migration with autogenerate
 migrate-make:
@@ -22,8 +22,8 @@ migrate-make:
 		echo "Error: MESSAGE is required. Usage: make migrate-make MESSAGE=\"your message here\""; \
 		exit 1; \
 	fi
-	uv run alembic revision --autogenerate -m "$(MESSAGE)"
+	uv run alembic -c database/alembic.ini revision --autogenerate -m "$(MESSAGE)"
 
 # Rollback last migration
 migrate-rollback:
-	uv run alembic downgrade -1
+	uv run alembic -c database/alembic.ini downgrade -1
