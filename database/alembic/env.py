@@ -1,4 +1,10 @@
 from logging.config import fileConfig
+import sys
+from pathlib import Path
+
+# Add project root to Python path
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
 
 from sqlalchemy import pool
 
@@ -21,8 +27,9 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Import all models here so Alembic can detect them
-# Example: from app.models import User, Post
-# For now, we'll use SQLModel.metadata
+from app.models import Hotel  # noqa: F401
+
+# Import all models to register them with SQLModel.metadata
 target_metadata = SQLModel.metadata
 
 # other values from the config, defined by the needs of env.py,
