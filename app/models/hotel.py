@@ -1,4 +1,5 @@
 """Hotel model."""
+from datetime import datetime
 from sqlmodel import SQLModel, Field
 
 
@@ -15,3 +16,4 @@ class Hotel(SQLModel, table=True):
     is_active: bool = Field(default=True)
     contact_email: str | None = None
     location_count: int = Field(default=0)
+    deleted_at: datetime | None = Field(default=None)
