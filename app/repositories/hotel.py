@@ -109,3 +109,42 @@ class HotelRepository:
         hotel.deleted_at = datetime.utcnow()
         self.session.add(hotel)
         return hotel
+
+    def get_by_id(self, hotel_id: int) -> Hotel | None:
+        """
+        Get hotel by ID, excluding soft-deleted hotels.
+
+        Args:
+            hotel_id: The hotel ID to look up
+
+        Returns:
+            Hotel instance if found and active, None otherwise
+        """
+        statement = select(Hotel).where(Hotel.id == hotel_id).where(Hotel.is_active)
+        return self.session.exec(statement).first()
+
+    def increment_location_count(self, hotel_id: int) -> None:
+        """
+        Increment the location count for a hotel.
+
+        Args:
+            hotel_id: The hotel ID to increment count for
+        """
+        statement = select(Hotel).where(Hotel.id == hotel_id)
+        hotel = self.session.exec(statement).first()
+        if hotel:
+            hotel.location_count += 1
+            self.session.add(hotel)
+
+    def decrement_location_count(self, hotel_id: int) -> None:
+        """
+        Decrement the location count for a hotel (never goes below 0).
+
+        Args:
+            hotel_id: The hotel ID to decrement count for
+        """
+        statement = select(Hotel).where(Hotel.id == hotel_id)
+        hotel = self.session.exec(statement).first()
+        if hotel:
+            hotel.location_count = max(0, hotel.location_count - 1)
+            self.session.add(hotel)

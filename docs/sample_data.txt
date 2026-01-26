@@ -20,3 +20,21 @@ curl -X 'POST' \
   "contact_phone": "9820098201",
   "contact_email": "jhon.doe+1@gmail.com"
 }'
+
+curl -X 'POST' \
+  'http://localhost:8000/locations/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "hotel_id": 1,
+    "name": "Mountain View Lonavala",
+    "description": "A beautiful hotel at the edge of the Lonavala peak, offering breathtaking views of the Sahyadri mountains. Perfect for a peaceful getaway.",
+    "address": "Lions Point Road, Near Tiger Point, Lonavala",
+    "latitude": 18.7500,
+    "longitude": 73.4167,
+    "city": "Lonavala",
+    "state": "Maharashtra",
+    "country": "India",
+    "contact_phone": "+91-2114-256789",
+    "contact_email": "reservations@mountainviewlonavala.com"
+  }'

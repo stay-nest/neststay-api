@@ -3,7 +3,7 @@
 from fastapi import Depends, FastAPI
 from sqlmodel import Session
 
-from app.routes import hotel as hotel_routes
+from app.routes import hotel as hotel_routes, location as location_routes
 from database import get_session
 
 app = FastAPI(
@@ -12,6 +12,7 @@ app = FastAPI(
 
 # Register routers
 app.include_router(hotel_routes.router)
+app.include_router(location_routes.router)
 
 
 @app.get("/")
