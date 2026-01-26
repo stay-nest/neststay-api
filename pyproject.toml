@@ -11,3 +11,81 @@ dependencies = [
     "sqlmodel>=0.0.31",
     "uvicorn[standard]>=0.40.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+    "ruff>=0.14.14",
+]
+
+[tool.ruff]
+# Target Python 3.12
+target-version = "py312"
+
+# Same as Black
+line-length = 88
+
+# Exclude common directories
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "database/alembic/versions",  # Auto-generated migrations
+]
+
+[tool.ruff.lint]
+select = [
+    # Core
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort (import sorting)
+    "UP",     # pyupgrade (modern Python syntax)
+
+    # Code quality
+    "B",      # flake8-bugbear (common bugs)
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "TCH",    # flake8-type-checking (optimize imports)
+
+    # FastAPI/Pydantic specific
+    "FA",     # flake8-future-annotations
+    "PIE",    # flake8-pie (misc lints)
+    "RUF",    # Ruff-specific rules
+
+    # Security
+    "S",      # flake8-bandit (security)
+
+    # Async (important for FastAPI)
+    "ASYNC",  # flake8-async
+]
+
+ignore = [
+    "S101",   # Allow assert (useful in tests)
+    "B008",   # Allow function calls in default args (Depends() pattern)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests can have more relaxed rules
+"tests/**/*.py" = ["S101", "PLR2004"]
+# Alembic migrations are auto-generated
+"database/alembic/**/*.py" = ["E501", "F401"]
+# Alembic env.py needs imports after sys.path manipulation
+"database/alembic/env.py" = ["E402"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "database", "config"]
+force-single-line = false
+combine-as-imports = true
+
+[tool.ruff.format]
+# Use double quotes (consistent with Black)
+quote-style = "double"
+# Indent with spaces
+indent-style = "space"
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+# Auto-detect line endings
+line-ending = "auto"
+# Format docstrings
+docstring-code-format = true

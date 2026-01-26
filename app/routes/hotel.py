@@ -1,9 +1,11 @@
 """Hotel routes."""
+
 from fastapi import APIRouter, Depends, Query, status
 from sqlmodel import Session
-from database import get_session
+
+from app.schemas.hotel import HotelCreate, HotelIndexResponse, HotelRead, HotelUpdate
 from app.services.hotel import HotelService
-from app.schemas.hotel import HotelIndexResponse, HotelCreate, HotelRead, HotelUpdate
+from database import get_session
 
 router = APIRouter(prefix="/hotels", tags=["hotels"])
 

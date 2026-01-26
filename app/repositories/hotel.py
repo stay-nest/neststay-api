@@ -1,8 +1,11 @@
 """Hotel repository for single-table database operations."""
+
 from datetime import datetime
+
 from sqlalchemy import desc
 from sqlalchemy.orm import defer
-from sqlmodel import Session, select, func
+from sqlmodel import Session, func, select
+
 from app.models.hotel import Hotel
 
 
@@ -17,7 +20,7 @@ class HotelRepository:
         """Get paginated list of active hotels."""
         statement = (
             select(Hotel)
-            .where(Hotel.is_active == True)
+            .where(Hotel.is_active)
             .order_by(desc(Hotel.id))
             .offset(offset)
             .limit(limit)
@@ -26,7 +29,7 @@ class HotelRepository:
 
     def count(self) -> int:
         """Get total count of active hotels."""
-        statement = select(func.count(Hotel.id)).where(Hotel.is_active == True)
+        statement = select(func.count(Hotel.id)).where(Hotel.is_active)
         result = self.session.exec(statement).one()
         return result
 
@@ -75,7 +78,7 @@ class HotelRepository:
                 defer(Hotel.contact_phone),
             )
             .where(Hotel.slug == slug)
-            .where(Hotel.is_active == True)
+            .where(Hotel.is_active)
         )
         return self.session.exec(statement).first()
 

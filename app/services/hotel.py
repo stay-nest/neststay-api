@@ -1,9 +1,11 @@
 """Hotel service for business logic."""
+
 from fastapi import HTTPException, status
 from sqlmodel import Session
-from app.repositories.hotel import HotelRepository
-from app.schemas.hotel import HotelIndexResponse, HotelRead, HotelCreate, HotelUpdate
+
 from app.models.hotel import Hotel
+from app.repositories.hotel import HotelRepository
+from app.schemas.hotel import HotelCreate, HotelIndexResponse, HotelRead, HotelUpdate
 from app.utils.slug import generate_unique_slug
 
 

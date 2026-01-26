@@ -1,8 +1,9 @@
 """Slug generation utilities."""
+
 import re
 import secrets
 import string
-from typing import Callable
+from collections.abc import Callable
 
 
 def slugify_name(name: str) -> str:

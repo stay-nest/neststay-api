@@ -1,5 +1,7 @@
 """Database configuration and session management using SQLModel."""
-from sqlmodel import SQLModel, create_engine, Session
+
+from sqlmodel import Session, create_engine
+
 from config import settings
 
 # Create database engine

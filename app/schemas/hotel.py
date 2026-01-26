@@ -1,8 +1,6 @@
 """Hotel schemas for request/response validation."""
-from typing import Generic, TypeVar
-from pydantic import BaseModel
 
-T = TypeVar("T")
+from pydantic import BaseModel
 
 
 class HotelCreate(BaseModel):
@@ -38,7 +36,7 @@ class HotelRead(BaseModel):
         from_attributes = True
 
 
-class PaginatedResponse(BaseModel, Generic[T]):
+class PaginatedResponse[T](BaseModel):
     """Generic pagination wrapper schema."""
 
     items: list[T]

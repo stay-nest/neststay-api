@@ -1,17 +1,17 @@
-from logging.config import fileConfig
 import sys
+from logging.config import fileConfig
 from pathlib import Path
 
 # Add project root to Python path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import pool
 
 # Import SQLModel and database config
 from sqlmodel import SQLModel, create_engine
+
 from config import settings
 
 # this is the Alembic Config object, which provides
@@ -27,7 +27,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Import all models here so Alembic can detect them
-from app.models import Hotel  # noqa: F401
+from app.models import Hotel
 
 # Import all models to register them with SQLModel.metadata
 target_metadata = SQLModel.metadata
@@ -73,9 +73,7 @@ def run_migrations_online() -> None:
     connectable = create_engine(settings.database_url, poolclass=pool.NullPool)
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
