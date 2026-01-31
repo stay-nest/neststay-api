@@ -1,5 +1,11 @@
 """Schemas for request/response validation."""
 
+from .guest_schema import (
+    GuestCreate,
+    GuestIndexResponse,
+    GuestRead,
+    GuestUpdate,
+)
 from .location_schema import (
     LocationCreate,
     LocationIndexResponse,
@@ -8,6 +14,10 @@ from .location_schema import (
 )
 
 __all__ = [
+    "GuestCreate",
+    "GuestIndexResponse",
+    "GuestRead",
+    "GuestUpdate",
     "LocationCreate",
     "LocationIndexResponse",
     "LocationRead",

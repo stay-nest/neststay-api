@@ -7,13 +7,14 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 
+from app.models.guest import Guest
 from app.models.hotel import Hotel
 from app.models.location import Location
 from database import get_session
 from main import app
 
 # Ensure all models are imported for table creation
-__all__ = ["Hotel", "Location"]
+__all__ = ["Guest", "Hotel", "Location"]
 
 
 @pytest.fixture(name="session")
