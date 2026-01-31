@@ -20,6 +20,12 @@ make migrate-make MESSAGE="your migration message"
 
 # Rollback last migration
 make migrate-rollback
+
+# Run tests
+make test
+
+# Run tests with coverage report
+make test-cov
 ```
 
 ## Architecture
@@ -57,3 +63,14 @@ Use repository directly in route when:
 - Simple CRUD on a single table
 
 See `docs/architecture.md` for detailed examples.
+
+## Testing
+
+- Uses pytest with SQLite in-memory database
+- Test client overrides the database session dependency
+- Tests are organized in `tests/` directory:
+  - `tests/conftest.py` - Shared fixtures (session, client, sample data)
+  - `tests/api/` - API endpoint tests
+- All models must be imported in `tests/conftest.py` for table creation
+
+**IMPORTANT**: Run `make test` after every implementation to ensure no existing functionality is broken. Do not consider a task complete until all tests pass.

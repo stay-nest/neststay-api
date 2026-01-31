@@ -1,0 +1,27 @@
+---
+description: NestStay API project overview, commands, and architecture
+alwaysApply: true
+---
+
+# NestStay API – Project Context
+
+NestStay API is a **FastAPI** backend for property/hotel management. Stack: **SQLModel** (ORM), **MySQL**, **Alembic** (migrations). Package manager: **uv**.
+
+## Commands
+
+- `make run-dev` – dev server (auto-reload)
+- `make migrate` – run migrations
+- `make migrate-make MESSAGE="..."` – create migration
+- `make migrate-rollback` – rollback last migration
+- `make test` – run tests
+- `make test-cov` – tests with coverage
+
+## Layout
+
+- **main.py** – FastAPI entry; **config.py** – Settings from `.env`
+- **database/** – engine, sessions; **database/alembic/** – migrations (import models in `env.py` for autogenerate)
+- **app/** – **models/** (SQLModel), **schemas/** (Pydantic), **repositories/** (single-table DB), **services/** (business logic), **routes/** (endpoints)
+
+Session: inject via `Depends(get_session)`.
+
+See `docs/architecture.md` for examples.

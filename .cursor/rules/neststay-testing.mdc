@@ -1,0 +1,16 @@
+---
+description: Testing conventions and completion criteria for NestStay API
+alwaysApply: true
+---
+
+# Testing
+
+- **Framework:** pytest; DB: SQLite in-memory for tests.
+- **Fixtures:** `tests/conftest.py` – session, client, sample data. Override DB session in test client.
+- **Layout:** `tests/api/` for API endpoint tests.
+- **Models:** Import all SQLModel models in `tests/conftest.py` so tables are created for tests.
+
+## Completion
+
+- Run **`make test`** after every implementation.
+- Do not treat a task as complete until **all tests pass.**

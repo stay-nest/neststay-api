@@ -1,0 +1,23 @@
+---
+description: Repository, service, and route layer rules for NestStay API
+alwaysApply: true
+---
+
+# Repository and Service Layer Rules
+
+## Repositories (`app/repositories/`)
+
+- **Single table only.** One repository per table; no calls to other repositories.
+- **Do not commit.** Repositories never call `commit()`; they only perform DB operations within a session.
+
+## Services (`app/services/`)
+
+- Use when an operation touches **multiple tables** or needs **non-trivial business logic**.
+- **Own the transaction:** services call `commit()` when the operation should be persisted.
+- Coordinate one or more repositories; do not bypass repositories to access DB directly for app tables.
+
+## Routes (`app/routes/`)
+
+- Keep routes **thin.** Delegate to a service or a repository.
+- Use a **service** when: multiple tables or complex logic.
+- Use a **repository** directly when: simple single-table CRUD only.
