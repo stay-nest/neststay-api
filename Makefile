@@ -1,4 +1,4 @@
-.PHONY: run-dev migrate migrate-make migrate-rollback lint lint-fix format format-check check help
+.PHONY: run-dev migrate migrate-make migrate-rollback lint lint-fix format format-check check test test-cov test-watch help
 
 # Default target
 help:
@@ -12,6 +12,9 @@ help:
 	@echo "  make format               - Format all files"
 	@echo "  make format-check         - Check formatting without changes"
 	@echo "  make check                - Run all checks (for CI)"
+	@echo "  make test                 - Run all tests"
+	@echo "  make test-cov             - Run tests with coverage report"
+	@echo "  make test-watch           - Run tests in watch mode (requires pytest-watch)"
 
 # Run FastAPI app with reload enabled
 run-dev:
@@ -50,3 +53,13 @@ format-check:
 check:
 	uv run ruff format --check .
 	uv run ruff check .
+
+# Testing
+test:
+	uv run --group test pytest
+
+test-cov:
+	uv run --group test pytest --cov=app --cov-report=term-missing --cov-report=html
+
+test-watch:
+	uv run --group test pytest --watch
