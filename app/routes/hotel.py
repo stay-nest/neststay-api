@@ -3,8 +3,13 @@
 from fastapi import APIRouter, Depends, Query, status
 from sqlmodel import Session
 
-from app.schemas.hotel import HotelCreate, HotelIndexResponse, HotelRead, HotelUpdate
-from app.services.hotel import HotelService
+from app.schemas.hotel_schema import (
+    HotelCreate,
+    HotelIndexResponse,
+    HotelRead,
+    HotelUpdate,
+)
+from app.services.hotel_service import HotelService
 from database import get_session
 
 router = APIRouter(prefix="/hotels", tags=["hotels"])

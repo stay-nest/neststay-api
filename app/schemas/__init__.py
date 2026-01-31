@@ -1,6 +1,6 @@
 """Schemas for request/response validation."""
 
-from .location import (
+from .location_schema import (
     LocationCreate,
     LocationIndexResponse,
     LocationRead,

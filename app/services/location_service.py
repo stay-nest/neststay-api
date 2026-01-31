@@ -4,9 +4,9 @@ from fastapi import HTTPException, status
 from sqlmodel import Session
 
 from app.models.location import Location
-from app.repositories.hotel import HotelRepository
-from app.repositories.location import LocationRepository
-from app.schemas.location import (
+from app.repositories.hotel_repo import HotelRepository
+from app.repositories.location_repo import LocationRepository
+from app.schemas.location_schema import (
     LocationCreate,
     LocationIndexResponse,
     LocationRead,

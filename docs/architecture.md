@@ -26,10 +26,10 @@ Repositories handle database operations for a **single table only**. They:
 - Receive a `Session` via constructor
 
 ```python
-# app/repositories/location.py
+# app/repositories/location_repo.py
 from sqlmodel import Session
 from app.models import Location
-from app.schemas.location import LocationCreate
+from app.schemas.location_schema import LocationCreate
 
 class LocationRepository:
     def __init__(self, session: Session):
@@ -57,11 +57,11 @@ Services handle **business logic** that may span multiple tables. They:
 - Are used when an operation affects more than one table
 
 ```python
-# app/services/location.py
+# app/services/location_service.py
 from sqlmodel import Session
-from app.repositories.location import LocationRepository
-from app.repositories.hotel import HotelRepository
-from app.schemas.location import LocationCreate
+from app.repositories.location_repo import LocationRepository
+from app.repositories.hotel_repo import HotelRepository
+from app.schemas.location_schema import LocationCreate
 from app.models import Location
 
 class LocationService:
@@ -92,8 +92,8 @@ Routes stay thin and delegate to services or repositories:
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
 from database import get_session
-from app.schemas.location import LocationCreate, LocationRead
-from app.services.location import LocationService
+from app.schemas.location_schema import LocationCreate, LocationRead
+from app.services.location_service import LocationService
 
 router = APIRouter(prefix="/locations", tags=["locations"])
 

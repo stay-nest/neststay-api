@@ -4,8 +4,13 @@ from fastapi import HTTPException, status
 from sqlmodel import Session
 
 from app.models.hotel import Hotel
-from app.repositories.hotel import HotelRepository
-from app.schemas.hotel import HotelCreate, HotelIndexResponse, HotelRead, HotelUpdate
+from app.repositories.hotel_repo import HotelRepository
+from app.schemas.hotel_schema import (
+    HotelCreate,
+    HotelIndexResponse,
+    HotelRead,
+    HotelUpdate,
+)
 from app.utils.slug import generate_unique_slug
 
 

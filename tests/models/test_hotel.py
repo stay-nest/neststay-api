@@ -93,13 +93,13 @@ class TestHotelColumns:
 
 
 class TestHotelModelFields:
-    """Assert Pydantic/model field metadata (types and defaults) for API/serialization."""
+    """Assert Pydantic/model field metadata (types and defaults) for API."""
 
     def test_id_field_is_optional_int_primary_key(self) -> None:
         f = Hotel.model_fields["id"]
         assert f.annotation == int | None
         assert f.default is None
-        # primary_key=True is asserted in TestHotelColumns.test_id_is_integer_primary_key
+        # primary_key=True asserted in TestHotelColumns.test_id_is_integer_primary_key
 
     def test_name_field_is_required_str(self) -> None:
         f = Hotel.model_fields["name"]
@@ -139,7 +139,9 @@ class TestHotelModelFields:
 
     def test_deleted_at_field_is_optional_datetime(self) -> None:
         f = Hotel.model_fields["deleted_at"]
-        assert "datetime" in str(f.annotation).lower() or "datetime" in str(f.annotation)
+        assert "datetime" in str(f.annotation).lower() or "datetime" in str(
+            f.annotation
+        )
         assert not f.is_required()
 
 

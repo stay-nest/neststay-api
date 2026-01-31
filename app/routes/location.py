@@ -3,13 +3,13 @@
 from fastapi import APIRouter, Depends, Query, status
 from sqlmodel import Session
 
-from app.schemas.location import (
+from app.schemas.location_schema import (
     LocationCreate,
     LocationIndexResponse,
     LocationRead,
     LocationUpdate,
 )
-from app.services.location import LocationService
+from app.services.location_service import LocationService
 from database import get_session
 
 router = APIRouter(prefix="/locations", tags=["locations"])
