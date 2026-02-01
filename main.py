@@ -5,6 +5,7 @@ from sqlmodel import Session
 
 from app.routes import (
     admin_guest as admin_guest_routes,
+    auth as auth_routes,
     guest as guest_routes,
     hotel as hotel_routes,
     location as location_routes,
@@ -16,6 +17,7 @@ app = FastAPI(
 )
 
 # Register routers
+app.include_router(auth_routes.router)
 app.include_router(guest_routes.router)
 app.include_router(admin_guest_routes.router)
 app.include_router(hotel_routes.router)

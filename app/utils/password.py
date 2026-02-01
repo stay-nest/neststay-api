@@ -17,3 +17,17 @@ def hash_password(plain: str) -> str:
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password_bytes, salt)
     return hashed.decode("utf-8")
+
+
+def verify_password(plain: str, hashed: str) -> bool:
+    """
+    Verify plain password against hashed password.
+
+    Args:
+        plain: Plain-text password
+        hashed: Stored hashed password
+
+    Returns:
+        True if password matches, False otherwise
+    """
+    return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
