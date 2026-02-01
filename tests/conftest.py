@@ -72,3 +72,28 @@ def created_hotel(client: TestClient, sample_hotel_data: dict) -> dict:
     """Create a hotel and return its data."""
     response = client.post("/hotels/", json=sample_hotel_data)
     return response.json()
+
+
+@pytest.fixture
+def sample_guest_register_phone() -> dict:
+    """Sample guest registration data (phone flow)."""
+    return {"name": "Test Guest", "phone_number": "+1234567890"}
+
+
+@pytest.fixture
+def sample_guest_register_email() -> dict:
+    """Sample guest registration data (email flow)."""
+    return {
+        "name": "Email Guest",
+        "email": "guest@test.com",
+        "password": "secret123",
+    }
+
+
+@pytest.fixture
+def created_guest(
+    client: TestClient, sample_guest_register_phone: dict
+) -> dict:
+    """Create a guest via phone registration and return its data."""
+    response = client.post("/guest/register", json=sample_guest_register_phone)
+    return response.json()

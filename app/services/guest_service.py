@@ -117,13 +117,16 @@ class GuestService:
         self.guest_repo.delete_guest(guest)
         self.session.commit()
 
-    def register_guest_by_phone_number(self, name: str, phone_number: str) -> Guest:
+    def register_guest_by_phone_number(
+        self, name: str, phone_number: str, email: str | None = None
+    ) -> Guest:
         """
         Register a guest by phone number (mobile flow; no password).
 
         Args:
             name: Guest name
             phone_number: Guest phone number (must be unique)
+            email: Optional email to store when user provides both phone and email
 
         Returns:
             Created guest instance
@@ -140,7 +143,7 @@ class GuestService:
         guest = Guest(
             name=name,
             phone_number=phone_number,
-            email=None,
+            email=email,
             password=None,
             is_active=True,
         )
