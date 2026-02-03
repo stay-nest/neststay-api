@@ -7,6 +7,7 @@ from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.models.location import Location
+    from app.models.room_type import RoomType
 
 
 class Hotel(SQLModel, table=True):
@@ -24,5 +25,6 @@ class Hotel(SQLModel, table=True):
     location_count: int = Field(default=0)
     deleted_at: datetime | None = Field(default=None)
 
-    # Relationship to locations
+    # Relationships
     locations: list["Location"] = Relationship(back_populates="hotel")
+    room_types: list["RoomType"] = Relationship(back_populates="hotel")

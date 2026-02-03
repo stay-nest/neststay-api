@@ -29,6 +29,21 @@ class LocationRepository:
         self.session.add(location)
         return location
 
+    def get_by_id(self, location_id: int) -> Location | None:
+        """
+        Get location by ID, excluding soft-deleted locations.
+
+        Args:
+            location_id: The location ID to look up
+
+        Returns:
+            Location instance if found and active, None otherwise
+        """
+        statement = (
+            select(Location).where(Location.id == location_id).where(Location.is_active)
+        )
+        return self.session.exec(statement).first()
+
     def get_by_slug(self, slug: str) -> Location | None:
         """
         Get location by slug, excluding soft-deleted locations.
