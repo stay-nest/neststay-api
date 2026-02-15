@@ -2,6 +2,8 @@
 
 from pydantic import BaseModel
 
+from app.schemas.location_image_schema import LocationImageReadEmbedded
+
 
 class LocationCreate(BaseModel):
     """Location creation schema."""
@@ -48,11 +50,18 @@ class LocationRead(BaseModel):
     state: str
     country: str
     is_active: bool
+    featured_image: LocationImageReadEmbedded | None = None
 
     class Config:
         """Pydantic config."""
 
         from_attributes = True
+
+
+class LocationDetailRead(LocationRead):
+    """Detail response with all images."""
+
+    images: list[LocationImageReadEmbedded] = []
 
 
 class LocationIndexResponse(BaseModel):

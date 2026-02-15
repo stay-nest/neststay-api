@@ -3,7 +3,7 @@
 from datetime import datetime
 
 from sqlalchemy import desc
-from sqlalchemy.orm import defer
+from sqlalchemy.orm import defer, selectinload
 from sqlmodel import Session, func, select
 
 from app.models.location import Location
@@ -60,6 +60,7 @@ class LocationRepository:
             .options(
                 defer(Location.contact_email),
                 defer(Location.contact_phone),
+                selectinload(Location.images),
             )
             .where(Location.slug == slug)
             .where(Location.is_active)

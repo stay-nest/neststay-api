@@ -32,3 +32,17 @@ class LocationImageRead(BaseModel):
     is_featured: bool
     sort_order: int
     created_at: datetime
+
+
+class LocationImageReadEmbedded(BaseModel):
+    """Image schema for embedding in location responses (no id or location_id)."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    filename: str
+    file_path: str
+    url: str
+    alt_text: str | None = None
+    is_featured: bool
+    sort_order: int
+    created_at: datetime

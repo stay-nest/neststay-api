@@ -5,9 +5,10 @@ from typing import TYPE_CHECKING
 
 from sqlmodel import Field, Relationship, SQLModel
 
+from app.models.location_image import LocationImage
+
 if TYPE_CHECKING:
     from app.models.hotel import Hotel
-    from app.models.location_image import LocationImage
     from app.models.room_type import RoomType
 
 
@@ -35,4 +36,13 @@ class Location(SQLModel, table=True):
     # Relationships
     hotel: "Hotel" = Relationship(back_populates="locations")
     images: list["LocationImage"] = Relationship(back_populates="location")
+    featured_image: LocationImage | None = Relationship(
+        sa_relationship_kwargs={
+            "primaryjoin": "and_(Location.id == foreign(LocationImage.location_id), "
+            "LocationImage.is_featured == True)",
+            "uselist": False,
+            "viewonly": True,
+            "lazy": "selectin",
+        }
+    )
     room_types: list["RoomType"] = Relationship(back_populates="location")

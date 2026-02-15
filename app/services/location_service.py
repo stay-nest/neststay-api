@@ -4,27 +4,64 @@ from fastapi import HTTPException, status
 from sqlmodel import Session
 
 from app.models.location import Location
+from app.models.location_image import LocationImage
 from app.repositories.hotel_repo import HotelRepository
 from app.repositories.location_repo import LocationRepository
+from app.schemas.location_image_schema import LocationImageReadEmbedded
 from app.schemas.location_schema import (
     LocationCreate,
+    LocationDetailRead,
     LocationIndexResponse,
     LocationRead,
     LocationUpdate,
 )
+from app.services.storage.base import StorageService
 from app.utils.slug import generate_unique_slug
 
 
 class LocationService:
     """Service for Location business logic."""
 
-    def __init__(self, session: Session):
-        """Initialize service with database session."""
+    def __init__(self, session: Session, storage: StorageService):
+        """Initialize service with database session and storage (for image URLs)."""
         self.session = session
+        self.storage = storage
         self.location_repo = LocationRepository(session)
         self.hotel_repo = HotelRepository(session)
 
-    def create(self, data: LocationCreate) -> Location:
+    def _image_to_embedded(self, img: LocationImage) -> LocationImageReadEmbedded:
+        """Build LocationImageReadEmbedded (no id/location_id) with url from storage."""
+        return LocationImageReadEmbedded(
+            filename=img.filename,
+            file_path=img.file_path,
+            url=self.storage.get_url(img.file_path),
+            alt_text=img.alt_text,
+            is_featured=img.is_featured,
+            sort_order=img.sort_order,
+            created_at=img.created_at,
+        )
+
+    def _location_to_read(self, location: Location) -> LocationRead:
+        """Build LocationRead from model including featured_image with URL."""
+        featured = None
+        if getattr(location, "featured_image", None):
+            featured = self._image_to_embedded(location.featured_image)
+        return LocationRead(
+            slug=location.slug,
+            hotel_id=location.hotel_id,
+            name=location.name,
+            description=location.description,
+            address=location.address,
+            latitude=location.latitude,
+            longitude=location.longitude,
+            city=location.city,
+            state=location.state,
+            country=location.country,
+            is_active=location.is_active,
+            featured_image=featured,
+        )
+
+    def create(self, data: LocationCreate) -> LocationRead:
         """
         Create a new location with auto-generated unique slug.
 
@@ -32,7 +69,7 @@ class LocationService:
             data: Location creation data
 
         Returns:
-            Created location instance
+            LocationRead (with featured_image when set)
 
         Raises:
             HTTPException: 404 if hotel_id doesn't exist
@@ -78,7 +115,7 @@ class LocationService:
         self.session.commit()
         self.session.refresh(location)
 
-        return location
+        return self._location_to_read(location)
 
     def list_locations(self, page: int, page_size: int) -> LocationIndexResponse:
         """List locations with pagination."""
@@ -89,8 +126,8 @@ class LocationService:
         locations = self.location_repo.get_paginated(offset, page_size)
         total = self.location_repo.count()
 
-        # Convert to response schema
-        items = [LocationRead.model_validate(location) for location in locations]
+        # Convert to response schema (featured_image loaded via selectin)
+        items = [self._location_to_read(location) for location in locations]
 
         return LocationIndexResponse(
             items=items,
@@ -131,8 +168,8 @@ class LocationService:
         locations = self.location_repo.get_by_hotel(hotel_id, offset, page_size)
         total = self.location_repo.count_by_hotel(hotel_id)
 
-        # Convert to response schema
-        items = [LocationRead.model_validate(location) for location in locations]
+        # Convert to response schema (featured_image loaded via selectin)
+        items = [self._location_to_read(location) for location in locations]
 
         return LocationIndexResponse(
             items=items,
@@ -162,7 +199,33 @@ class LocationService:
             )
         return location
 
-    def update(self, slug: str, data: LocationUpdate) -> Location:
+    def get_detail_by_slug(self, slug: str) -> LocationDetailRead:
+        """
+        Get location detail by slug with all images.
+
+        Args:
+            slug: The slug to look up
+
+        Returns:
+            LocationDetailRead with featured_image and images (with URLs)
+
+        Raises:
+            HTTPException: 404 if location not found or soft-deleted
+        """
+        location = self.location_repo.get_by_slug(slug)
+        if not location:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Location with slug '{slug}' not found",
+            )
+        base = self._location_to_read(location)
+        images = [self._image_to_embedded(img) for img in location.images]
+        return LocationDetailRead(
+            **base.model_dump(),
+            images=images,
+        )
+
+    def update(self, slug: str, data: LocationUpdate) -> LocationRead:
         """
         Update a location by slug.
 
@@ -171,7 +234,7 @@ class LocationService:
             data: Location update data
 
         Returns:
-            Updated location instance
+            LocationRead (with featured_image when set)
 
         Raises:
             HTTPException: 404 if location not found or soft-deleted
@@ -191,7 +254,7 @@ class LocationService:
         self.session.commit()
         self.session.refresh(location)
 
-        return location
+        return self._location_to_read(location)
 
     def delete(self, slug: str) -> None:
         """

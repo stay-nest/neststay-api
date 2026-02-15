@@ -229,3 +229,51 @@ class TestLocationRelationship:
         mapper = sa_inspect(Location)
         rel = next(r for r in mapper.relationships if r.key == "hotel")
         assert rel.mapper.class_.__name__ == "Hotel"
+
+
+class TestLocationImagesRelationship:
+    """Assert relationship to LocationImage (images list)."""
+
+    def test_has_images_relationship(self) -> None:
+        mapper = sa_inspect(Location)
+        rels = {r.key: r for r in mapper.relationships}
+        assert "images" in rels
+
+    def test_images_relationship_back_populates_location(self) -> None:
+        mapper = sa_inspect(Location)
+        rel = next(r for r in mapper.relationships if r.key == "images")
+        assert rel.back_populates == "location"
+
+    def test_images_relationship_target_is_location_image_entity(self) -> None:
+        mapper = sa_inspect(Location)
+        rel = next(r for r in mapper.relationships if r.key == "images")
+        assert rel.mapper.class_.__name__ == "LocationImage"
+
+
+class TestLocationFeaturedImageRelationship:
+    """Assert filtered featured_image relationship (single image where is_featured=True)."""
+
+    def test_has_featured_image_relationship(self) -> None:
+        mapper = sa_inspect(Location)
+        rels = {r.key: r for r in mapper.relationships}
+        assert "featured_image" in rels
+
+    def test_featured_image_relationship_is_viewonly(self) -> None:
+        mapper = sa_inspect(Location)
+        rel = next(r for r in mapper.relationships if r.key == "featured_image")
+        assert rel.viewonly is True
+
+    def test_featured_image_relationship_uselist_false(self) -> None:
+        mapper = sa_inspect(Location)
+        rel = next(r for r in mapper.relationships if r.key == "featured_image")
+        assert rel.uselist is False
+
+    def test_featured_image_relationship_lazy_selectin(self) -> None:
+        mapper = sa_inspect(Location)
+        rel = next(r for r in mapper.relationships if r.key == "featured_image")
+        assert str(rel.lazy) == "selectin"
+
+    def test_featured_image_relationship_target_is_location_image_entity(self) -> None:
+        mapper = sa_inspect(Location)
+        rel = next(r for r in mapper.relationships if r.key == "featured_image")
+        assert rel.mapper.class_.__name__ == "LocationImage"
