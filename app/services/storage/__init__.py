@@ -18,4 +18,5 @@ def get_storage_service(settings: object) -> StorageService:
     upload_dir = getattr(settings, "UPLOAD_DIR", "uploads")
     if storage_type == "s3":
         raise NotImplementedError("S3 storage not implemented yet")
-    return LocalStorageService(upload_dir)
+    base_url = getattr(settings, "APP_URL", None) if storage_type == "local" else None
+    return LocalStorageService(upload_dir, base_url=base_url)

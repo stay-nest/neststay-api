@@ -63,7 +63,8 @@ class TestUploadImage:
         assert response.status_code == 201
         data = response.json()
         assert "url" in data
-        assert data["url"].startswith("/uploads/")
+        # Local storage may return full URL (APP_URL + /uploads/...) or path-only
+        assert "/uploads/" in data["url"]
         assert "file_path" in data
         assert "locations" in data["file_path"] and str(location_id) in data["file_path"]
         assert data["filename"] == "test.jpg"
@@ -154,7 +155,8 @@ class TestListImages:
         assert response.status_code == 200
         items = response.json()
         assert len(items) == 1
-        assert items[0]["url"].startswith("/uploads/")
+        # Local storage may return full URL (APP_URL + /uploads/...) or path-only
+        assert "/uploads/" in items[0]["url"]
 
     def test_list_404_for_nonexistent_location(self, client: TestClient, auth_headers: dict):
         """List returns 404 when location does not exist."""

@@ -21,6 +21,8 @@ class Settings:
     # Storage settings
     STORAGE_TYPE: str = os.getenv("STORAGE_TYPE", "local")
     UPLOAD_DIR: str = os.getenv("UPLOAD_DIR", "uploads")
+    # When STORAGE_TYPE is "local", image URLs are prefixed with this (e.g. http://localhost:8000)
+    APP_URL: str = os.getenv("APP_URL", "http://localhost:8000")
 
     # JWT settings
     JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "change-me-in-production")
