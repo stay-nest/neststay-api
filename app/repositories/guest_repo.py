@@ -76,7 +76,7 @@ class GuestRepository:
         statement = (
             select(Guest)
             .where(Guest.is_active)
-            .order_by(desc(Guest.id))
+            .order_by(desc(Guest.id))  # type: ignore[arg-type]
             .offset(offset)
             .limit(limit)
         )
@@ -84,7 +84,7 @@ class GuestRepository:
 
     def count(self) -> int:
         """Get total count of active guests."""
-        statement = select(func.count(Guest.id)).where(Guest.is_active)
+        statement = select(func.count(Guest.id)).where(Guest.is_active)  # type: ignore[arg-type]
         result = self.session.exec(statement).one()
         return result
 

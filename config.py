@@ -18,6 +18,10 @@ class Settings:
     DB_PASSWORD: str = os.getenv("DB_PASSWORD", "")
     DB_NAME: str = os.getenv("DB_NAME", "neststay")
 
+    # Storage settings
+    STORAGE_TYPE: str = os.getenv("STORAGE_TYPE", "local")
+    UPLOAD_DIR: str = os.getenv("UPLOAD_DIR", "uploads")
+
     # JWT settings
     JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "change-me-in-production")
     JWT_ALGORITHM: str = "HS256"

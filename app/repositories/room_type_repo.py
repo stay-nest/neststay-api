@@ -48,7 +48,7 @@ class RoomTypeRepository:
         statement = (
             select(RoomType)
             .where(RoomType.is_active)
-            .order_by(desc(RoomType.id))
+            .order_by(desc(RoomType.id))  # type: ignore[arg-type]
             .offset(offset)
             .limit(limit)
         )
@@ -72,7 +72,7 @@ class RoomTypeRepository:
             select(RoomType)
             .where(RoomType.location_id == location_id)
             .where(RoomType.is_active)
-            .order_by(desc(RoomType.id))
+            .order_by(desc(RoomType.id))  # type: ignore[arg-type]
             .offset(offset)
             .limit(limit)
         )
@@ -94,7 +94,7 @@ class RoomTypeRepository:
             select(RoomType)
             .where(RoomType.hotel_id == hotel_id)
             .where(RoomType.is_active)
-            .order_by(desc(RoomType.id))
+            .order_by(desc(RoomType.id))  # type: ignore[arg-type]
             .offset(offset)
             .limit(limit)
         )
@@ -102,7 +102,7 @@ class RoomTypeRepository:
 
     def count(self) -> int:
         """Get total count of active room types."""
-        statement = select(func.count(RoomType.id)).where(RoomType.is_active)
+        statement = select(func.count(RoomType.id)).where(RoomType.is_active)  # type: ignore[arg-type]
         result = self.session.exec(statement).one()
         return result
 
@@ -117,7 +117,7 @@ class RoomTypeRepository:
             Count of active room types for the location
         """
         statement = (
-            select(func.count(RoomType.id))
+            select(func.count(RoomType.id))  # type: ignore[arg-type]
             .where(RoomType.location_id == location_id)
             .where(RoomType.is_active)
         )
@@ -135,7 +135,7 @@ class RoomTypeRepository:
             Count of active room types for the hotel
         """
         statement = (
-            select(func.count(RoomType.id))
+            select(func.count(RoomType.id))  # type: ignore[arg-type]
             .where(RoomType.hotel_id == hotel_id)
             .where(RoomType.is_active)
         )

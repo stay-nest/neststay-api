@@ -7,6 +7,7 @@ from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.models.hotel import Hotel
+    from app.models.location_image import LocationImage
     from app.models.room_type import RoomType
 
 
@@ -33,4 +34,5 @@ class Location(SQLModel, table=True):
 
     # Relationships
     hotel: "Hotel" = Relationship(back_populates="locations")
+    images: list["LocationImage"] = Relationship(back_populates="location")
     room_types: list["RoomType"] = Relationship(back_populates="location")

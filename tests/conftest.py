@@ -10,13 +10,14 @@ from sqlmodel.pool import StaticPool
 from app.models.guest import Guest
 from app.models.hotel import Hotel
 from app.models.location import Location
+from app.models.location_image import LocationImage
 from app.models.room_type import RoomType
 from app.utils.slug import generate_unique_slug
 from database import get_session
 from main import app
 
 # Ensure all models are imported for table creation
-__all__ = ["Guest", "Hotel", "Location", "RoomType"]
+__all__ = ["Guest", "Hotel", "Location", "LocationImage", "RoomType"]
 
 
 @pytest.fixture(name="session")

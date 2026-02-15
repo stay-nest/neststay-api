@@ -71,7 +71,7 @@ class LocationRepository:
         statement = (
             select(Location)
             .where(Location.is_active)
-            .order_by(desc(Location.id))
+            .order_by(desc(Location.id))  # type: ignore[arg-type]
             .offset(offset)
             .limit(limit)
         )
@@ -93,7 +93,7 @@ class LocationRepository:
             select(Location)
             .where(Location.hotel_id == hotel_id)
             .where(Location.is_active)
-            .order_by(desc(Location.id))
+            .order_by(desc(Location.id))  # type: ignore[arg-type]
             .offset(offset)
             .limit(limit)
         )
@@ -101,7 +101,7 @@ class LocationRepository:
 
     def count(self) -> int:
         """Get total count of active locations."""
-        statement = select(func.count(Location.id)).where(Location.is_active)
+        statement = select(func.count(Location.id)).where(Location.is_active)  # type: ignore[arg-type]
         result = self.session.exec(statement).one()
         return result
 
@@ -116,7 +116,7 @@ class LocationRepository:
             Count of active locations for the hotel
         """
         statement = (
-            select(func.count(Location.id))
+            select(func.count(Location.id))  # type: ignore[arg-type]
             .where(Location.hotel_id == hotel_id)
             .where(Location.is_active)
         )

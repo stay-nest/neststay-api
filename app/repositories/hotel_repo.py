@@ -21,7 +21,7 @@ class HotelRepository:
         statement = (
             select(Hotel)
             .where(Hotel.is_active)
-            .order_by(desc(Hotel.id))
+            .order_by(desc(Hotel.id))  # type: ignore[arg-type]
             .offset(offset)
             .limit(limit)
         )
@@ -29,7 +29,7 @@ class HotelRepository:
 
     def count(self) -> int:
         """Get total count of active hotels."""
-        statement = select(func.count(Hotel.id)).where(Hotel.is_active)
+        statement = select(func.count(Hotel.id)).where(Hotel.is_active)  # type: ignore[arg-type]
         result = self.session.exec(statement).one()
         return result
 
