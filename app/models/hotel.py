@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
+    from app.models.booking import Booking
     from app.models.location import Location
     from app.models.room_type import RoomType
 
@@ -28,3 +29,4 @@ class Hotel(SQLModel, table=True):
     # Relationships
     locations: list["Location"] = Relationship(back_populates="hotel")
     room_types: list["RoomType"] = Relationship(back_populates="hotel")
+    bookings: list["Booking"] = Relationship(back_populates="hotel")

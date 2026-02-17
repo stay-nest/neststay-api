@@ -8,6 +8,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from app.models.location_image import LocationImage
 
 if TYPE_CHECKING:
+    from app.models.booking import Booking
     from app.models.hotel import Hotel
     from app.models.room_type import RoomType
 
@@ -46,3 +47,4 @@ class Location(SQLModel, table=True):
         }
     )
     room_types: list["RoomType"] = Relationship(back_populates="location")
+    bookings: list["Booking"] = Relationship(back_populates="location")

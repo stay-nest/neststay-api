@@ -27,7 +27,15 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Import all models here so Alembic can detect them
-from app.models import Guest, Hotel, Location, LocationImage, RoomType
+from app.models import (
+    Booking,
+    Guest,
+    Hotel,
+    Location,
+    LocationImage,
+    RoomDateInventory,
+    RoomType,
+)
 
 # Import all models to register them with SQLModel.metadata
 target_metadata = SQLModel.metadata

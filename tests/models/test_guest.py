@@ -149,7 +149,9 @@ class TestGuestModelFields:
 
 
 class TestGuestRelationship:
-    """Assert Guest has no relationships."""
+    """Assert Guest relationships."""
 
-    def test_has_no_relationships(self) -> None:
-        assert list(sa_inspect(Guest).relationships) == []
+    def test_has_bookings_relationship(self) -> None:
+        relationships = sa_inspect(Guest).relationships
+        names = {rel.key for rel in relationships}
+        assert "bookings" in names

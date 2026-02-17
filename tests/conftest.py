@@ -7,17 +7,27 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 
+from app.models.booking import Booking
 from app.models.guest import Guest
 from app.models.hotel import Hotel
 from app.models.location import Location
 from app.models.location_image import LocationImage
+from app.models.room_date_inventory import RoomDateInventory
 from app.models.room_type import RoomType
 from app.utils.slug import generate_unique_slug
 from database import get_session
 from main import app
 
 # Ensure all models are imported for table creation
-__all__ = ["Guest", "Hotel", "Location", "LocationImage", "RoomType"]
+__all__ = [
+    "Booking",
+    "Guest",
+    "Hotel",
+    "Location",
+    "LocationImage",
+    "RoomDateInventory",
+    "RoomType",
+]
 
 
 @pytest.fixture(name="session")
